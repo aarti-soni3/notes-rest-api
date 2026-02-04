@@ -108,3 +108,6 @@ project-root/
 ├── package-lock.json         # Locked dependency versions
 └── README.md                 # Project documentation
 ```
+
+## License
+MIT
