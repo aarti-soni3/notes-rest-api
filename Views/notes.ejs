@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" />
+    <style>
+      .note-container {
+        display: grid;
+        grid-template-columns:auto auto auto;
+      }
+
+      .note{
+        border:1px solid; 
+        display: inline-block; 
+        margin: 5px; 
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Notes</h1>
+    <div class="note-container">
+      <% let allnotes = notes %>
+   
+      <!-- // if (starred !== undefined) {
+      // const isStarred = starred === "true";
+      // const filtered = notes.filter((note) => note.is_starred === isStarred);
+      // return res.status(200).json(filtered);
+      // } -->
+     
+     <% if(starred !== undefined)
+        {
+          allnotes = notes.filter(note => {
+           return note.is_starred === JSON.parse(starred)
+        })
+        } 
+      %>
+
+      <% allnotes.forEach(element => { 
+        const content = element.content;
+        %>
+        <li class="note">
+          <h3><b> Title : </b> <%= element.title  %></h3>
+          <p><b> Content : </b> <%= content.slice(0,60)  %>...</p>
+          <p> <b> Starred : </b><%= element.is_starred  %></p>
+          <p> <b> Tags : </b> <%= element.tags  %></p>
+        </li>
+      <% }) %>
+    </div>
+  </body>  
+</html>

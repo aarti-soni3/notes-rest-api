@@ -2,7 +2,7 @@ const { findItemById } = require("../Services/NoteService.js");
 const { WriteData, ReadData } = require("../Services/FileService.js");
 const path = require("path");
 
-const fullPath = path.join(__dirname, "..","Data", process.env.DATA_FILE_PATH);
+const fullPath = path.join(__dirname, "..", "Data", process.env.DATA_FILE_PATH);
 const notes = require(fullPath) || require("../Data/NoteAPI.json");
 
 async function ReloadNotes(req, res) {
@@ -18,13 +18,7 @@ async function ReloadNotes(req, res) {
 
 async function handleGetAllUsers(req, res) {
   const { starred } = req.query;
-
-  if (starred !== undefined) {
-    const isStarred = starred === "true";
-    const filtered = notes.filter((note) => note.is_starred === isStarred);
-    return res.status(200).json(filtered);
-  }
-  return res.status(200).json(notes);
+  return res.render("notes", { notes, starred });
 }
 
 async function handlerCreateNewNote(req, res) {

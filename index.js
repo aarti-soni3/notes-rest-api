@@ -9,8 +9,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.set("view engine", "ejs");
-app.set("views", path.resolve("./Views "));
-
+app.set("views", path.resolve("./Views"));
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
