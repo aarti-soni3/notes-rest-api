@@ -3,7 +3,7 @@ const path = require("path");
 
 const logDir = path.join(__dirname, "..", "Data");
 const filePath = path.join(logDir, "log.txt");
-async function logRequestToFile(req) {
+async function logRequestToFile(req, res, next) {
   const methodName = req.method;
   const urlPath = req.url;
   try {
@@ -11,6 +11,7 @@ async function logRequestToFile(req) {
       filePath,
       `${methodName}, ${urlPath} New Request Received\n`,
     );
+    next();
   } catch (error) {
     console.error(`Failed to write log! ${error}`);
   }

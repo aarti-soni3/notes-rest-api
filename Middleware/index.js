@@ -1,4 +1,4 @@
-const note_utils = require("../Utility/note-utils");
+const note_utils = require("../Services/NoteService");
 
 function PostValidationCheckMiddleware(req, res, next) {
   const data = req.body;
