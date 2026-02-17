@@ -1,4 +1,4 @@
-const note_utils = require("../Services/NoteService");
+const noteService = require("../Service/note-service.js");
 
 function PostValidationCheckMiddleware(req, res, next) {
   const data = req.body;
@@ -31,7 +31,7 @@ function PostMetaDataGenerateMiddleware(req, res, next) {
   const newNote = {
     ...data,
     id: newId,
-    create_at: newDate,
+    created_at: newDate,
     updated_at: newDate,
   };
 
@@ -39,7 +39,7 @@ function PostMetaDataGenerateMiddleware(req, res, next) {
   next();
 }
 
-function PatchValidationMiddleware(req, res, next) {
+function FieldValidationMiddleware(req, res, next) {
   const protectedFields = ["id", "created_at", "updated_at"];
   const allowedFields = ["title", "content", "tags", "is_starred"];
   const data = req.body;
@@ -63,7 +63,7 @@ function PatchValidationMiddleware(req, res, next) {
 function DeleteValidationCheckMiddleware(notes) {
   return (req, res, next) => {
     const id = Number(req.params.id);
-    const isIdValid = note_utils.findItemById(notes, id);
+    const isIdValid = noteService.findItemById(notes, id);
 
     if (!isIdValid) {
       return res.status(400).json({
@@ -79,6 +79,6 @@ function DeleteValidationCheckMiddleware(notes) {
 module.exports = {
   PostValidationCheckMiddleware,
   PostMetaDataGenerateMiddleware,
-  PatchValidationMiddleware,
+  FieldValidationMiddleware,
   DeleteValidationCheckMiddleware,
 };

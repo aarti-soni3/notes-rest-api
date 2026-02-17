@@ -14,13 +14,18 @@
       .note{
         border:1px solid; 
         display: inline-block; 
-        margin: 5px; 
+        margin: 5px;
         padding: 10px;
       }
     </style>
   </head>
   <body>
     <h1>My Notes</h1>
+
+    <div>
+      <a href="/createNote">create note</a>
+    </div>
+
     <div class="note-container">
       <% let allnotes = notes %>
    
@@ -38,7 +43,9 @@
         } 
       %>
 
-      <% allnotes.forEach(element => { 
+      <%
+      console.log(allnotes);
+       allnotes.forEach(element => { 
         const content = element.content;
         %>
         <li class="note">
