@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title></title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>create note</h1>
 
-        <% console.log(notes) %>
-
-        <h1>create note</h1>
-    </body>
+    <form action="/notes/" method="POST">
+      <div>
+        <label for="title">Title: </label>
+        <input type="text" id="title" name="title" required />
+      </div>
+      <br />
+      <div>
+        <label for="content">Content: </label>
+        <input type="text" id="content" name="content" required />
+      </div>
+      <br />
+      <div>
+        <label for="tag">Tag: </label>
+        <input type="text" id="tag" name="tags" required />
+      </div>
+      <br />
+      <div>
+        <input type="checkbox" id="starred" name="is_starred" value="starred" />
+        <label for="starred">Add to favorite </label>
+      </div>
+      <br />
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </body>
 </html>

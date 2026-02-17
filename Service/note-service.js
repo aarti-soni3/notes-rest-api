@@ -21,14 +21,14 @@ class NoteService {
   }
 
   handleGetAllNotes(starred) {
-    console.log(this.notes);
+    // console.log(this.notes);
     if (starred === undefined) return this.notes;
 
     console.log("starred", starred);
     const isStarred = starred === "true";
-    console.log(isStarred);
+    // console.log(isStarred);
     const notes = this.notes.filter((note) => note.isStarred === isStarred);
-    console.log(notes);
+    // console.log(notes);
     return notes;
   }
 
@@ -39,6 +39,7 @@ class NoteService {
       return this.notes;
     } catch (error) {
       console.error("Failed to create note ", error);
+      throw new Error("Failed to create note");
     }
   }
 
@@ -80,7 +81,7 @@ class NoteService {
     try {
       const note = this.findItemById(id);
 
-      console.log("Notessss : ",note)
+      console.log("Notessss : ", note);
 
       if (!note) throw new Error("Note not found");
 
@@ -98,12 +99,3 @@ class NoteService {
 
 const noteService = new NoteService();
 module.exports = noteService;
-// module.exports = {
-//   findItemById,
-//   initialize,
-//   handleGetAllNotes,
-//   handleCreateNote,
-//   handleGetNoteById,
-//   handleUpdateById,
-//   handleDeleteById
-// };

@@ -6,9 +6,12 @@ function PostValidationCheckMiddleware(req, res, next) {
   if (
     !data.title ||
     !data.content ||
-    data.is_starred === undefined ||
+    // data.is_starred === undefined ||
     !data.tags
   ) {
+    console.log(
+      `title : ${data.title} ,content : ${data.content}, starred : ${!!data.is_starred}  ${data.tags}`,
+    );
     return res
       .status(400)
       .json({ status: "error", message: "All fields are required !" });
@@ -27,12 +30,15 @@ function PostMetaDataGenerateMiddleware(req, res, next) {
   const year = date.getFullYear();
   const newDate = `${month}/${day}/${year}`;
 
-  data.is_starred = JSON.parse(data.is_starred);
+  data.is_starred = !!data.is_starred;
   const newNote = {
-    ...data,
     id: newId,
     created_at: newDate,
     updated_at: newDate,
+    title: data.title,
+    content: data.content,
+    is_starred: data.is_starred,
+    tags: data.tags,
   };
 
   req.newNote = newNote;

@@ -20,7 +20,7 @@ const { ReadData } = require("../Utility/file-utility.js");
 
 async function handleGetAllNotes(req, res) {
   const { starred } = req.query;
-  console.log("starred before: ", starred);
+  // console.log("starred before: ", starred);
   return res.status(200).json(noteService.handleGetAllNotes(starred));
   // return res.render("notes", { notes, starred });
   // return res.status(200).json()
@@ -84,7 +84,7 @@ async function handleDeleteNoteById(req, res) {
   const id = Number(req.params.id);
   // const data = notes.filter((note) => note.id !== id);
 
-  console.log(id);
+  // console.log(id);
 
   try {
     // await WriteData(data, "Note Deleted Successfully!");
