@@ -1,12 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const methodOverride = require('method-override');
 
 const { logRequestToFile } = require("./Utility/log-utility.js");
 const APIRoutes = require("./Routes/api-routes.js");
 const ViewRoutes = require("./Routes/view-routes.js");
 
 const noteService = require("./Service/note-service.js");
+
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -16,6 +18,7 @@ app.set("views", path.resolve("./Views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride('_method'));
 
 app.use(logRequestToFile);
 

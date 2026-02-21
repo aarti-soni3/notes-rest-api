@@ -4,11 +4,11 @@
     <title>Home Page</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="css/style.css" rel="stylesheet" />
+    <!-- <link href="css/style.css" rel="stylesheet" /> -->
     <style>
       .note-container {
         display: grid;
-        grid-template-columns:auto auto auto;
+        grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
       }
 
       .note{
@@ -17,13 +17,29 @@
         margin: 5px;
         padding: 10px;
       }
+
+      .link{
+        text-decoration: underline; 
+        cursor: pointer; 
+        color: blue;
+        display: inline-block;
+      }
+
+      button{
+        border: none; 
+        background-color: transparent; 
+      }
     </style>
   </head>
   <body>
     <h1>My Notes</h1>
 
     <div>
-      <a href="/notes/create-note">create note</a>
+      <% if(locals.error) {%>
+      <p style="color: red;"> <%= error%> </p>
+      <%} %>
+
+      <button class="link"><b><a href="/notes/create-note">Create note</a></b></button>
     </div>
 
     <div class="note-container">
@@ -44,16 +60,40 @@
       %>
 
       <%
-       allnotes.forEach(element => { 
-        const content = element.content;
+       allnotes.forEach(note => { 
+        const content = note.content;
         %>
         <li class="note">
-          <h3><b> Title : </b> <%= element.title  %></h3>
+          <h3><b> Id : </b> <%= note.id  %></h3>
+          <h3><b> Title : </b> <%= note.title  %></h3>
           <p><b> Content : </b> <%= content.slice(0,60)  %>...</p>
-          <p> <b> Starred : </b><%= element.is_starred  %></p>
-          <p> <b> Tags : </b> <%= element.tags  %></p>
+          <p> <b> Starred : </b><%= note.is_starred  %></p>
+          <p> <b> Tags : </b> <%= note.tags  %></p>
+
+          <div style="display:flex; gap:15px; justify-content: end;">
+              <a href="/notes/<%=note.id%>" type="submit"><button class="link"><b>Update</b></button></a>
+              <form class="delete-form" data-title="<%=note.title %>" action="/notes/<%=note.id%>?_method=DELETE" method="post">
+                <button class="link"><b>Delete</b></button>
+              </form>
+          </div>
         </li>
       <% }) %>
     </div>
+
+    <script>
+
+      document.querySelectorAll(".delete-form").forEach( form =>{
+          form.addEventListener('submit', function(e){
+              e.preventDefault();
+
+              const title = e.currentTarget.dataset.title;
+              const confirmed = confirm(`You want to delete ${title} note ?`);
+
+              if(confirmed)
+                form.submit();
+          });
+      });
+
+    </script>
   </body>  
 </html>
