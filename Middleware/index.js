@@ -1,4 +1,4 @@
-const note_utils = require("../Services/NoteService");
+const noteService = require("../Service/note-service.js");
 
 function PostValidationCheckMiddleware(req, res, next) {
   const data = req.body;
@@ -6,9 +6,12 @@ function PostValidationCheckMiddleware(req, res, next) {
   if (
     !data.title ||
     !data.content ||
-    data.is_starred === undefined ||
+    // data.is_starred === undefined ||
     !data.tags
   ) {
+    console.log(
+      `title : ${data.title} ,content : ${data.content}, starred : ${!!data.is_starred}  ${data.tags}`,
+    );
     return res
       .status(400)
       .json({ status: "error", message: "All fields are required !" });
@@ -27,19 +30,22 @@ function PostMetaDataGenerateMiddleware(req, res, next) {
   const year = date.getFullYear();
   const newDate = `${month}/${day}/${year}`;
 
-  data.is_starred = JSON.parse(data.is_starred);
+  data.is_starred = !!data.is_starred;
   const newNote = {
-    ...data,
     id: newId,
-    create_at: newDate,
+    created_at: newDate,
     updated_at: newDate,
+    title: data.title,
+    content: data.content,
+    is_starred: data.is_starred,
+    tags: data.tags,
   };
 
   req.newNote = newNote;
   next();
 }
 
-function PatchValidationMiddleware(req, res, next) {
+function FieldValidationMiddleware(req, res, next) {
   const protectedFields = ["id", "created_at", "updated_at"];
   const allowedFields = ["title", "content", "tags", "is_starred"];
   const data = req.body;
@@ -63,7 +69,7 @@ function PatchValidationMiddleware(req, res, next) {
 function DeleteValidationCheckMiddleware(notes) {
   return (req, res, next) => {
     const id = Number(req.params.id);
-    const isIdValid = note_utils.findItemById(notes, id);
+    const isIdValid = noteService.findItemById(notes, id);
 
     if (!isIdValid) {
       return res.status(400).json({
@@ -79,6 +85,6 @@ function DeleteValidationCheckMiddleware(notes) {
 module.exports = {
   PostValidationCheckMiddleware,
   PostMetaDataGenerateMiddleware,
-  PatchValidationMiddleware,
+  FieldValidationMiddleware,
   DeleteValidationCheckMiddleware,
 };

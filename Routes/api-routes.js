@@ -8,25 +8,26 @@ const notes = require(fullPath) || require("../Data/NoteAPI.json");
 const {
   PostValidationCheckMiddleware,
   PostMetaDataGenerateMiddleware,
-  PatchValidationMiddleware,
+  FieldValidationMiddleware,
   DeleteValidationCheckMiddleware,
 } = require("../Middleware/index.js");
 
 const {
-  handleGetAllUsers,
-  ReloadNotes,
+  handleGetAllNotes,
+  // ReloadNotes,
   handlerCreateNewNote,
   handleGetNoteById,
   handleUpdateNoteById,
   handleDeleteNoteById,
-} = require("../Controllers/Note.js");
+} = require("../Controllers/api-controller.js");
 
-router.get("/reload", ReloadNotes);
+// router.get("/reload", ReloadNotes);
 
 router
   .route("/")
-  .get(handleGetAllUsers)
+  .get(handleGetAllNotes)
   .post(
+    FieldValidationMiddleware,
     PostValidationCheckMiddleware,
     PostMetaDataGenerateMiddleware,
     handlerCreateNewNote,
@@ -35,7 +36,7 @@ router
 router
   .route("/:id")
   .get(handleGetNoteById)
-  .patch(PatchValidationMiddleware, handleUpdateNoteById)
-  .delete(DeleteValidationCheckMiddleware(notes), handleDeleteNoteById);
+  .patch(FieldValidationMiddleware, handleUpdateNoteById)
+  .delete(handleDeleteNoteById);
 
 module.exports = router;
